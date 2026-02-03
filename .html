@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 手机/微信适配：禁止缩放、自适应屏幕 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>一二布布の专属表白</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", "苹方-简", "Microsoft YaHei", sans-serif;
+        }
+
+        /* 页面整体：渐变爱心背景+全屏居中+禁止滚动 */
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #fecfef 100%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 爱心漂浮基础样式 */
+        .heart {
+            position: absolute;
+            background-color: #ff4d6d;
+            transform: rotate(45deg);
+            opacity: 0.7;
+            animation: heartFloat 8s linear infinite;
+            z-index: 1;
+        }
+        /* 爱心左右半圆（构成完整爱心） */
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ff4d6d;
+            border-radius: 50%;
+        }
+        .heart::before {
+            top: -100%;
+            left: 0;
+        }
+        .heart::after {
+            top: 0;
+            left: -100%;
+        }
+        /* 爱心漂浮动画：从下到上、随机速度/透明度 */
+        @keyframes heartFloat {
+            0% {
+                transform: rotate(45deg) translateY(100vh) scale(0.5);
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: rotate(45deg) translateY(-20vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* 一二布布图片轮播容器：圆角+白边+阴影 */
+        .img-box {
+            width: 80%;
+            max-width: 300px;
+            height: 300px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 77, 109, 0.5);
+            margin-bottom: 30px;
+            border: 5px solid #ffffff;
+            position: relative;
+            z-index: 2;
+        }
+        /* 轮播图片基础样式 */
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            animation: imgSlide 15s linear infinite;
+        }
+        /* 4张图片轮播延时：依次切换，每张显示3.75秒 */
+        .img-box img:nth-child(1) { animation-delay: 0s; }
+        .img-box img:nth-child(2) { animation-delay: 3.75s; }
+        .img-box img:nth-child(3) { animation-delay: 7.5s; }
+        .img-box img:nth-child(4) { animation-delay: 11.25s; }
+        /* 图片轮播动画：淡入淡出 */
+        @keyframes imgSlide {
+            0%, 20% { opacity: 1; }  /* 显示 */
+            25%, 95% { opacity: 0; } /* 隐藏 */
+            100% { opacity: 0; }
+        }
+
+        /* 表白文字容器：居中+白色阴影 */
+        .text-box {
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            z-index: 2;
+        }
+        .text-box h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .text-box p {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        /* 表白按钮：hover变色+缩放+阴影 */
+        .btn {
+            padding: 12px 30px;
+            background-color: #ff4d6d;
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            transition: all 0.3s ease-in-out;
+            z-index: 2;
+        }
+        .btn:hover {
+            background-color: #ff335c;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 情话弹窗遮罩：半透明黑色+全屏 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none; /* 默认隐藏 */
+            align-items: center;
+            justify-content: center;
+            z-index: 999; /* 最高层级，覆盖所有元素 */
+            backdrop-filter: blur(5px); /* 背景模糊，提升氛围感 */
+        }
+        /* 弹窗内容容器：圆角+白背景+阴影 */
+        .modal-content {
+            width: 85%;
+            max-width: 350px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 77, 109, 0.8);
+            transform: scale(0.9);
+            animation: modalShow 0.3s ease-in-out forwards;
+        }
+        /* 弹窗淡入缩放动画 */
+        @keyframes modalShow {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .modal-content h2 {
+            color: #ff4d6d;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .modal-content p {
+            color: #333333;
+            font-size: 17px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        /* 弹窗关闭按钮 */
+        .close-btn {
+            padding: 8px 25px;
+            background-color: #ff4d6d;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .close-btn:hover {
+            background-color: #ff335c;
+        }
+
+        /* 隐藏原生音频控件，仅后台播放 */
+        audio {
+            display: none;
+        }
+
+        /* 适配小屏手机（如SE/老年机） */
+        @media (max-width: 320px) {
+            .img-box {
+                height: 250px;
+            }
+            .text-box h1 {
+                font-size: 20px;
+            }
+            .text-box p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 爱心漂浮容器（JS自动生成爱心） -->
+    <div class="heart-box"></div>
+
+    <!-- 一二布布图片轮播：本地images文件夹（1/2/3/4.jpg） -->
+    <div class="img-box">
+        <img src="images/1.jpg" alt="一二布布牵手">
+        <img src="images/2.jpg" alt="一二布布贴贴">
+        <img src="images/3.jpg" alt="一二布布抱抱">
+        <img src="images/4.jpg" alt="一二布布比心">
+    </div>
+
+    <!-- 表白文字 -->
+    <div class="text-box">
+        <h1>致我最爱的宝贝</h1>
+        <p>一二喜欢你，布布也是❤️</p>
+    </div>
+
+    <!-- 表白按钮：点击解锁悄悄话 -->
+    <button class="btn" onclick="openModal()">点击解锁我的悄悄话</button>
+
+    <!-- 情话弹窗 -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2>专属情话</h2>
+            <p>世界上有两种可爱，一种是一二布布，另一种是你❤️<br>往后余生，三餐四季，岁岁年年，我都想和你一起～</p>
+            <button class="close-btn" onclick="closeModal()">收到我的爱💌</button>
+        </div>
+    </div>
+
+    <!-- 背景音乐：本地audio文件夹（bgm.mp3） -->
+    <audio src="audio/bgm.mp3" id="bgm" loop></audio>
+
+    <script>
+        // ============= 1. 随机生成爱心漂浮动画（完整逻辑） =============
+        const heartBox = document.querySelector('.heart-box');
+        const heartCount = 20; // 爱心数量，可修改（建议15-25）
+
+        // 生成指定数量的爱心
+        for (let i = 0; i < heartCount; i++) {
+            createHeart();
+        }
+
+        // 创建单个爱心：随机位置/大小/动画延迟
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+
+            // 随机宽度（10-25px），高度同宽度
+            const size = Math.random() * 15 + 10;
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+
+            // 随机水平位置（0-100vw）
+            heart.style.left = `${Math.random() * 100}vw`;
+
+            // 随机动画延迟（0-8s），避免爱心同时运动
+            heart.style.animationDelay = `${Math.random() * 8}s`;
+
+            // 随机动画时长（6-10s），爱心漂浮速度不同
+            heart.style.animationDuration = `${Math.random() * 4 + 6}s`;
+
+            heartBox.appendChild(heart);
+
+            // 爱心消失后重新生成，循环漂浮
+            setTimeout(() => {
+                heart.remove();
+                createHeart();
+            }, 8000);
+        }
+
+        // ============= 2. 情话弹窗打开/关闭逻辑 =============
+        // 打开弹窗
+        function openModal() {
+            document.getElementById('modal').style.display = 'flex';
+            // 打开弹窗时播放音乐（双重触发，确保生效）
+            document.getElementById('bgm').play().catch(err => {});
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // 点击弹窗遮罩关闭弹窗（额外交互，提升体验）
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modal')) {
+                closeModal();
+            }
+        });
+
+        // ============= 3. 解决微信/浏览器音频自动播放限制 =============
+        // 点击页面任意位置触发音乐播放
+        document.addEventListener('click', () => {
+            const bgm = document.getElementById('bgm');
+            bgm.play().catch(err => {
+                // 忽略播放报错，不影响页面其他功能
+                console.log('音乐播放触发：', err);
+            });
+        });
+
+        // 触摸页面触发（适配手机触屏）
+        document.addEventListener('touchstart', () => {
+            const bgm = document.getElementById('bgm');
+            bgm.play().catch(err => {});
+        }, { passive: true });
+
+        // ============= 4. 禁止手机触屏滑动页面（避免误操作） =============
+        document.body.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+
+        // ============= 5. 页面加载完成后尝试自动播放音乐 =============
+        window.onload = function() {
+            const bgm = document.getElementById('bgm');
+            // 页面加载完成后触发播放
+            bgm.play().catch(err => {});
+        }
+    </script>
+</body>
+</html>
