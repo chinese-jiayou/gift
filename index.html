@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专属浪漫 - 我们的小美好</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+            padding-bottom: 50px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .header:hover {
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .header h1 {
+            color: #e63946;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
+        }
+
+        .header h1::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #e63946, transparent);
+            border-radius: 3px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+
+        .text-section {
+            width: 80%;
+            margin: 0 auto 50px;
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #444;
+            transition: all 0.3s ease;
+        }
+
+        .text-section:hover {
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .text-section h2 {
+            color: #e63946;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .text-section h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 30%;
+            width: 40%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #e63946, transparent);
+        }
+
+        .text-section p {
+            margin-bottom: 15px;
+            text-indent: 2em;
+        }
+
+        .carousel {
+            position: relative;
+            width: 90%;
+            height: 600px;
+            margin: 0 auto 50px;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            background-color: #f8f8f8;
+        }
+
+        .carousel-images {
+            display: flex;
+            width: calc(100% * 10);
+            height: 100%;
+            transition: transform 0.4s ease;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .carousel-images img {
+            width: calc(100% / 10);
+            height: 100%;
+            object-fit: contain;
+            object-position: center center;
+            display: block;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 2rem;
+            color: #e63946;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .prev-btn { left: 20px; }
+        .next-btn { right: 20px; }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+        }
+        .indicator.active {
+            background: #e63946;
+        }
+
+        .countdown {
+            text-align: center;
+            margin: 20px auto 40px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+        }
+
+        .countdown h2 {
+            color: #e63946;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .countdown-box {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .time-item {
+            background: linear-gradient(135deg, #e63946 0%, #d62828 100%);
+            color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .time-item span {
+            font-size: 0.9rem;
+        }
+
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 15px;
+            border-radius: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+
+        .music-btn {
+            background: #e63946;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .loader-heart {
+            font-size: 50px;
+            animation: beat 1s infinite;
+        }
+        @keyframes beat {
+            0%,100%{transform:scale(1);}50%{transform:scale(1.2);}
+        }
+
+        .heart {
+            position: fixed;
+            pointer-events: none;
+            animation: fall 3s linear forwards;
+            color: #e63946;
+            font-size: 20px;
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="loader" id="loader"><div class="loader-heart">💖</div></div>
+
+<div class="music-control">
+    <span id="musicIcon">🎶</span>
+    <button class="music-btn" id="musicBtn">暂停：小宇</button>
+    <button class="music-btn" id="changeMusicBtn">切换音乐</button>
+    <audio id="bgMusic" loop>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>💖 与你的每一刻都是浪漫 💖</h1>
+        <p>始于初见，止于终老 · 愿我们的故事温柔且漫长</p>
+    </div>
+
+    <!-- 1. 真心话 -->
+    <div class="text-section">
+        <h2>✨ 写给你的心里话 ✨</h2>
+        <p>遇见你，是我此生最幸运的事。就像微风遇见晚霞，星光遇见夜空，一切都来得刚刚好。</p>
+        <p>喜欢和你一起走过的每一段路，喜欢听你笑着说话的样子，喜欢和你分享生活里的点点滴滴。</p>
+        <p>我想，浪漫不是突然的惊喜，而是日复一日的陪伴。愿我们在细碎的时光里，慢慢相爱，岁岁年年。</p>
+        <p>往后余生，风雪是你，平淡是你，清贫是你，荣华是你，心底温柔是你，目光所至，也是你。</p>
+    </div>
+
+    <!-- 2. 轮播图 -->
+    <div class="carousel">
+        <div class="carousel-images" id="carouselImages">
+            <img src="images/1.gif">
+            <img src="images/2.gif">
+            <img src="images/3.gif">
+            <img src="images/4.gif">
+            <img src="images/5.gif">
+            <img src="images/6.gif">
+            <img src="images/7.gif">
+            <img src="images/8.gif">
+            <img src="images/9.gif">
+            <img src="images/10.gif">
+        </div>
+        <button class="carousel-btn prev-btn">◀</button>
+        <button class="carousel-btn next-btn">▶</button>
+        <div class="carousel-indicators">
+            <span class="indicator active"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+        </div>
+    </div>
+
+    <!-- 3. 倒计时 -->
+    <div class="countdown">
+        <h2>⏳ 我们在一起的时间</h2>
+        <div id="loveDate">始于：2025年01月01日</div>
+        <div class="countdown-box">
+            <div class="time-item" id="day">0<span>天</span></div>
+            <div class="time-item" id="hour">0<span>时</span></div>
+            <div class="time-item" id="minute">0<span>分</span></div>
+            <div class="time-item" id="second">0<span>秒</span></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    const changeBtn = document.getElementById('changeMusicBtn');
+    const icon = document.getElementById('musicIcon');
+
+    const musicList = [
+        { name: "小宇", src: "music/小宇.mp3" },
+        { name: "唯一", src: "music/唯一.mp3" },
+        { name: "因为爱情", src: "music/因为爱情.mp3" }
+    ];
+
+    let index = 0;
+    let hasPlayed = false;
+
+    // 第一次点击页面 → 自动播放第一首
+    document.addEventListener('click', function firstPlay() {
+        if (hasPlayed) return;
+        hasPlayed = true;
+        playSong(0);
+        document.removeEventListener('click', firstPlay);
+    });
+
+    function playSong(i) {
+        index = i;
+        const song = musicList[index];
+        bgMusic.src = song.src;
+        bgMusic.play().catch(err => console.log(err));
+        musicBtn.textContent = `暂停：${song.name}`;
+        icon.textContent = "🎶";
+    }
+
+    // 暂停/播放
+    musicBtn.addEventListener('click', () => {
+        if (bgMusic.paused) {
+            bgMusic.play();
+            musicBtn.textContent = `暂停：${musicList[index].name}`;
+            icon.textContent = "🎶";
+        } else {
+            bgMusic.pause();
+            musicBtn.textContent = `播放：${musicList[index].name}`;
+            icon.textContent = "🎵";
+        }
+    });
+
+    // 切歌
+    changeBtn.addEventListener('click', () => {
+        const next = (index + 1) % musicList.length;
+        playSong(next);
+    });
+
+    // 倒计时
+    function count() {
+        const start = new Date(2025,0,1);
+        const now = new Date();
+        const diff = Math.max(0, now - start);
+        const s = Math.floor(diff / 1000);
+        document.getElementById('day').innerText = Math.floor(s/86400)+'天';
+        document.getElementById('hour').innerText = Math.floor(s%86400/3600)+'时';
+        document.getElementById('minute').innerText = Math.floor(s%3600/60)+'分';
+        document.getElementById('second').innerText = s%60+'秒';
+    }
+    setInterval(count, 1000);
+    count();
+
+    // 轮播
+    let cur = 0;
+    const total = 10;
+    const imgs = document.getElementById('carouselImages');
+    const dots = document.querySelectorAll('.indicator');
+
+    function update() {
+        imgs.style.transform = `translateX(-${cur * 100 / total}%)`;
+        dots.forEach((d,i) => d.classList.toggle('active', i===cur));
+    }
+    setInterval(()=>{cur=(cur+1)%total;update();}, 4000);
+    document.querySelector('.next-btn').addEventListener('click',()=>{cur=(cur+1)%total;update();});
+    document.querySelector('.prev-btn').addEventListener('click',()=>{cur=(cur-1+total)%total;update();});
+
+    // 加载动画
+    setTimeout(()=>{
+        document.getElementById('loader').style.display='none';
+    }, 1500);
+</script>
+
+</body>
+</html>
